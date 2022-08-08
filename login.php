@@ -100,6 +100,8 @@ echo "<!DOCTYPE html>
 			<br />
 
 			<p class=\"submit\"><input type=\"submit\" value=\"Login\" name=\"Login\"></p>
+			
+			<a href=\"register.php\">Register New User</a>
 
 	</fieldset>
 
