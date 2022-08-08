@@ -7,7 +7,7 @@ dvwaPageStartup( array( 'phpids' ) );
 
 dvwaDatabaseConnect();
 
-if( isset( $_POST[ 'Login' ] ) ) {
+if( isset( $_POST[ 'Register' ] ) ) {
 	// Anti-CSRF
 	if (array_key_exists ("session_token", $_SESSION)) {
 		$session_token = $_SESSION[ 'session_token' ];
@@ -78,7 +78,7 @@ echo "<!DOCTYPE html>
 	<fieldset>
 			<label for=\"user\">New Username</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"username\"><br />
 			<label for=\"pass\">New Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"password\"><br />
-      <label for=\"pass\">Confirm Password</label> <input type=\"confirmpassword\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"confirmpassword\"><br />
+      			<label for=\"confirmpass\">Confirm Password</label> <input type=\"confirmpassword\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"confirmpassword\"><br />
 			<br />
 			<p class=\"submit\"><input type=\"submit\" value=\"Register\" name=\"Register\"></p>
 			
