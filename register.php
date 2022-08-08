@@ -7,6 +7,9 @@ dvwaPageStartup( array( 'phpids' ) );
 
 dvwaDatabaseConnect();
 
+$count = "SELECT COUNT(*) FROM dvwa.users;";
+echo "<h1>$count</h1>";
+	
 if( isset( $_POST[ 'Register' ] ) ) {
 	// Anti-CSRF
 	if (array_key_exists ("session_token", $_SESSION)) {
