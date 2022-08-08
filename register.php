@@ -25,7 +25,8 @@ if( isset( $_POST[ 'Login' ] ) ) {
 	$pass = stripslashes( $pass );
 	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 	$pass = md5( $pass );
-
+	
+	$query  = "CREATE USER '$user'@'localhost' IDENTIFIED BY '$pass';";
 	$query = ("SELECT table_schema, table_name, create_time
 				FROM information_schema.tables
 				WHERE table_schema='{$_DVWA['db_database']}' AND table_name='users'
