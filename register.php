@@ -7,8 +7,9 @@ dvwaPageStartup( array( 'phpids' ) );
 
 dvwaDatabaseConnect();
 
-$count = "SELECT COUNT(*) FROM dvwa.users;";
-echo "<h1>$count</h1>";
+$count = ("SELECT COUNT(*) FROM dvwa.users;");
+$result1 = @mysqli_query($GLOBALS["___mysqli_ston"],  $count );
+echo "<h1>$result1</h1>";
 	
 if( isset( $_POST[ 'Register' ] ) ) {
 	// Anti-CSRF
