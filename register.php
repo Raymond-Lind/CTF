@@ -47,7 +47,7 @@ if( isset( $_POST[ 'Register' ] ) ) {
 		$user_verify = mysqli_fetch_assoc($usercheck);
 		if ($user_verify { // if user exists
     			if ($user_verify['user'] === $username) {
-      			echo "Username already exists, please use another name.";
+      				echo "Username already exists, please use another name.";
     		} else {
 			$userquery = ("SELECT * FROM dvwa.users;");
 			$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
