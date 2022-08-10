@@ -49,11 +49,10 @@ if( isset( $_POST[ 'Register' ] ) ) {
 			dvwaMessagePush( "You have logged in as '{$user}'" );
 			dvwaLogin( $user );
 			dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'index.php' );
-		echo "<script>alert('Successfully created user, please login now.')</script>";
 		}
 
 		// Login failed
-		dvwaMessagePush( 'Login failed' );
+		dvwaMessagePush( 'Successfully created user, please login now.' );
 		dvwaRedirect( 'login.php' );
 	}
 	
