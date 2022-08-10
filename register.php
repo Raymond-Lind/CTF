@@ -96,6 +96,7 @@ echo "<!DOCTYPE html>
 			<label for=\"lastname\">Last Name</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"last\"><br />
 			<label for=\"pass\">New Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"password\"><br />
       			<label for=\"confirmpass\">Confirm Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"confirmpassword\"><br />
+			<input type=\"hidden\" name=\"isEmployee\" value=\"False\">
 			<br />
 			<p class=\"submit\"><input type=\"submit\" value=\"Register\" name=\"Register\"></p>
 			
