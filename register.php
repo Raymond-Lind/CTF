@@ -37,13 +37,15 @@ if( isset( $_POST[ 'Register' ] ) ) {
 		dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'setup.php' );
 	}
 	$user = $_POST[ 'username' ];
+	$firstname = $_POST[ 'first' ];
+	$lastname = $_POST[ 'last' ];
 	if ($password != $confirmpassword) {
 		echo "Passwords do not match, please try again!";
 	} else {
 		$userquery = ("SELECT * FROM dvwa.users;");
 		$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
 		$count = mysqli_num_rows( $userresult ) + 1;
-		$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password) values ('$count', 'Alex', 'Lind', '$user', '$pass');";
+		$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password, avatar, failed_login) values ('$count', '$firstname', '$lastname', '$user', '$pass', '/hackable/users/admin.jpg', '0');";
 		$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
 		if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
 			dvwaMessagePush( "You have logged in as '{$user}'" );
@@ -85,6 +87,8 @@ echo "<!DOCTYPE html>
 	<form action=\"register.php\" method=\"post\">
 	<fieldset>
 			<label for=\"user\">New Username</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"username\"><br />
+			<label for=\"firstname\">First Name</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"first\"><br />
+			<label for=\"lastname\">Last Name</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"last\"><br />
 			<label for=\"pass\">New Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"password\"><br />
       			<label for=\"confirmpass\">Confirm Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"confirmpassword\"><br />
 			<br />
