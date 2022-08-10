@@ -38,7 +38,6 @@ if( isset( $_POST[ 'Register' ] ) ) {
 	$userquery = ("SELECT * FROM dvwa.users;");
 	$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
 	$count = mysqli_num_rows( $userresult ) + 1;
-	echo "<h1>$userresult</h1>";
 	$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password) values ('$count', 'Alex', 'Lind', '$user', '$pass');";
 	$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
 	if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
