@@ -17,8 +17,8 @@ if( isset( $_POST[ 'Register' ] ) ) {
 
 	checkToken( $_REQUEST[ 'user_token' ], $session_token, 'login.php' );
 
-	$user = $_POST[ 'username' ];
-	$user = stripslashes( $user );
+	$username = $_POST[ 'username' ];
+	$user = stripslashes( $username );
 	$user = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $user ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
 	$password = $_POST[ 'password' ];
@@ -42,20 +42,26 @@ if( isset( $_POST[ 'Register' ] ) ) {
 	if ($password != $confirmpassword) {
 		echo "Passwords do not match, please try again!";
 	} else {
-		$userquery = ("SELECT * FROM dvwa.users;");
-		$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
-		$count = mysqli_num_rows( $userresult ) + 1;
-		$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password, avatar, failed_login) values ('$count', '$firstname', '$lastname', '$user', '$pass', '/hackable/users/admin.jpg', '0');";
-		$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
-		if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
-			dvwaMessagePush( "You have logged in as '{$user}'" );
-			dvwaLogin( $user );
-			dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'index.php' );
+		$user_check_query = "SELECT * FROM dvwa.users WHERE user='$user' LIMIT 1";
+		$usercheck = @mysqli_query($GLOBALS["___mysqli_ston"],  $user_check_query );
+		$user_verify = mysqli_fetch_assoc($usercheck);
+		if ($user_verify { // if user exists
+    			if ($user_verify['user'] === $username) {
+      			echo "Username already exists, please use another name.";
+    		} else {
+			$userquery = ("SELECT * FROM dvwa.users;");
+			$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
+			$count = mysqli_num_rows( $userresult ) + 1;
+			$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password, avatar, failed_login) values ('$count', '$firstname', '$lastname', '$user', '$pass', '/hackable/users/admin.jpg', '0');";
+			$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
+			if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
+				dvwaMessagePush( "You have logged in as '{$user}'" );
+				dvwaLogin( $user );
+				dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'index.php' );
+			dvwaMessagePush( 'Successfully created user, please login now.' );
+			dvwaRedirect( 'login.php' );
+			}
 		}
-
-		// Login failed
-		dvwaMessagePush( 'Successfully created user, please login now.' );
-		dvwaRedirect( 'login.php' );
 	}
 	
 }
