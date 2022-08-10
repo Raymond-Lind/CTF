@@ -21,8 +21,9 @@ if( isset( $_POST[ 'Register' ] ) ) {
 	$user = stripslashes( $user );
 	$user = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $user ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
-	$pass = $_POST[ 'password' ];
-	$pass = stripslashes( $pass );
+	$password = $_POST[ 'password' ];
+	$confirmpassword = $_POST[ 'confirmpassword' ];
+	$pass = stripslashes( $password );
 	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 	$pass = md5( $pass );
 	
@@ -35,20 +36,26 @@ if( isset( $_POST[ 'Register' ] ) ) {
 		dvwaMessagePush( "First time using DVWA.<br />Need to run 'setup.php'." );
 		dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'setup.php' );
 	}
-	$userquery = ("SELECT * FROM dvwa.users;");
-	$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
-	$count = mysqli_num_rows( $userresult ) + 1;
-	$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password) values ('$count', 'Alex', 'Lind', '$user', '$pass');";
-	$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
-	if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
-		dvwaMessagePush( "You have logged in as '{$user}'" );
-		dvwaLogin( $user );
-		dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'index.php' );
-	}
+	$user = $_POST[ 'username' ];
+	if ($password != $confirmpassword) {
+		echo "Passwords do not match, please try again!";
+	} else {
+		$userquery = ("SELECT * FROM dvwa.users;");
+		$userresult = @mysqli_query($GLOBALS["___mysqli_ston"],  $userquery );
+		$count = mysqli_num_rows( $userresult ) + 1;
+		$query  = "INSERT INTO dvwa.users (user_id, first_name, last_name, user, password) values ('$count', 'Alex', 'Lind', '$user', '$pass');";
+		$result = @mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '.<br />Try <a href="setup.php">installing again</a>.</pre>' );
+		if( $result && mysqli_num_rows( $result ) == 1 ) {    // Login Successful...
+			dvwaMessagePush( "You have logged in as '{$user}'" );
+			dvwaLogin( $user );
+			dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT . 'index.php' );
+		}
 
-	// Login failed
-	dvwaMessagePush( 'Login failed' );
-	dvwaRedirect( 'login.php' );
+		// Login failed
+		dvwaMessagePush( 'Login failed' );
+		dvwaRedirect( 'login.php' );
+	}
+	
 }
 
 $messagesHtml = messagesPopAllToHtml();
@@ -79,7 +86,7 @@ echo "<!DOCTYPE html>
 	<fieldset>
 			<label for=\"user\">New Username</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"username\"><br />
 			<label for=\"pass\">New Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"password\"><br />
-      			<label for=\"confirmpass\">Confirm Password</label> <input type=\"confirmpassword\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"confirmpassword\"><br />
+      			<label for=\"confirmpass\">Confirm Password</label> <input type=\"password\" class=\"loginInput\" AUTOCOMPLETE=\"off\" size=\"20\" name=\"confirmpassword\"><br />
 			<br />
 			<p class=\"submit\"><input type=\"submit\" value=\"Register\" name=\"Register\"></p>
 			
